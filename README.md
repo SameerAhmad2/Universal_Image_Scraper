@@ -1,7 +1,16 @@
 # UNIVERSAL IMAGE FETCHER #
 
 Image scraper built with Python 3.9 and Beautiful Soup. Fetches remote image assets accessed by any website...
+ 
+### REQUIREMENTS ###
+Requires _Python 3.9_ and _BeautifulSoup 4_
 
+### USAGE INSTRUCTIONS ###
+* Set up python environment _(default environment manager from pycharm)_
+* Start virtual environment ``` source <ENVIRONMENT_NAME>/bin/activate ```  
+* Run ``` pip install -r requirements.txt```
+* Start Fetching Images with ```python image_fetcher.py <OUTPUT_DIR_NAME> [-optional_args]```
+  ```
     usage: image_fetcher.py output_dir
                             [-h] 
                             [-w [website]] 
@@ -11,7 +20,6 @@ Image scraper built with Python 3.9 and Beautiful Soup. Fetches remote image ass
                             [-u url_length] 
                             [-e extension]
                             [-l log_file]
-    
     positional arguments:
       output_dir            Output directory for fetched images.
 
@@ -27,7 +35,8 @@ Image scraper built with Python 3.9 and Beautiful Soup. Fetches remote image ass
       -u url_length         URL length of remote asset.
       -e extension          Output image extension.
       -l log_file           Log file to flush stdout.
-
+    
+  ```
 ### DEFAULT_VALUES ###
     default_output_extension    = 'png'    
     default_url_length          = 'long'
@@ -36,17 +45,7 @@ Image scraper built with Python 3.9 and Beautiful Soup. Fetches remote image ass
     default_image_tags          = ['img', 'source', 'meta']
     default_image_attributes    = [ 'src', 'data-wood_src', 'data-large_image', 'data-srcset', 
                                     'srcset', 'data-src', 'content']
-    
-### REQUIREMENTS ###
-Requires _Python 3.9_ and _BeautifulSoup 4_
-
-### USAGE INSTRUCTIONS ###
-* Set up python environment _(default environment manager from pycharm)_
-* Start virtual environment ``` source <ENVIRONMENT_NAME>/bin/activate ```  
-* Run ``` pip install -r requirements.txt```
-
-* Start Fetching Images with ```python image_fetcher.py <OUTPUT_DIR_NAME> [-optional_args]```
-
+  
 ### ADDITIONAL INFORMATION ###
  - If a website is not specified the script will try to pass the default _template.html_ file for contents (in case manual html parsing is required).
  - All images fetched will be stored in a parent _images_ directory along with the specified output directory.

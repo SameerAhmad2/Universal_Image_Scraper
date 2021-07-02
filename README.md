@@ -2,7 +2,14 @@
 
 Image scraper built with Python 3.9 and Beautiful Soup. Fetches remote image assets accessed by any website...
 
-    usage: image_fetcher.py [-h] [-w [website]] [-f filter_tags [filter_tags ...]] [-tags image_tags [image_tags ...]] [-a image_attributes [image_attributes ...]] -o output_dir [-u url_length] [-e extension]
+    usage: image_fetcher.py -o output_dir
+                            [-h] 
+                            [-w [website]] 
+                            [-f filter_tags [filter_tags ...]] 
+                            [-tags image_tags [image_tags ...]] 
+                            [-a image_attributes [image_attributes ...]] 
+                            [-u url_length] 
+                            [-e extension]
                             [-l log_file]
     
     optional arguments:
@@ -34,6 +41,10 @@ Requires _Python 3.9_ and _BeautifulSoup 4_
 ### USAGE INSTRUCTIONS ###
 * Set up python environment _(default environment manager from pycharm)_
 * Start virtual environment ``` source <ENVIRONMENT_NAME>/bin/activate ```  
-* Run ``` pip install < requirements.txt```
+* Run ``` pip install -r requirements.txt```
 
-* Call function ```python image_fetcher.py [-args]```
+* Start Fetching Images with ```python image_fetcher.py [-args]```
+
+### ADDITIONAL INFORMATION ###
+If a website is not specified the script will try to pass the default _template.html_ file 
+for contents (incase manual html parsing is required).

@@ -2,7 +2,7 @@
 
 Image scraper built with Python 3.9 and Beautiful Soup. Fetches remote image assets accessed by any website...
 
-    usage: image_fetcher.py -o output_dir
+    usage: image_fetcher.py output_dir
                             [-h] 
                             [-w [website]] 
                             [-f filter_tags [filter_tags ...]] 
@@ -12,6 +12,9 @@ Image scraper built with Python 3.9 and Beautiful Soup. Fetches remote image ass
                             [-e extension]
                             [-l log_file]
     
+    positional arguments:
+      output_dir            Output directory for fetched images.
+
     optional arguments:
       -h, --help            show this help message and exit
       -w [website]          Website url to fetch images from.
@@ -21,7 +24,6 @@ Image scraper built with Python 3.9 and Beautiful Soup. Fetches remote image ass
                             HTML tags to find image links through.
       -a image_attributes [image_attributes ...]
                             HTML image attribute to parse for links.
-      -o output_dir         Output directory for fetched images.
       -u url_length         URL length of remote asset.
       -e extension          Output image extension.
       -l log_file           Log file to flush stdout.
@@ -46,5 +48,6 @@ Requires _Python 3.9_ and _BeautifulSoup 4_
 * Start Fetching Images with ```python image_fetcher.py [-args]```
 
 ### ADDITIONAL INFORMATION ###
-If a website is not specified the script will try to pass the default _template.html_ file 
-for contents (incase manual html parsing is required).
+ - If a website is not specified the script will try to pass the default _template.html_ file for contents (in case manual html parsing is required).
+ - All images fetched will be stored in a parent _images_ directory along with the specified output directory.
+ - If the remote asset already has an image extension, the parsed extension is ignored.

@@ -36,9 +36,8 @@ argParser.add_argument('-a',
                        default=default_image_attributes,
                        help='HTML image attribute to parse for links.')
 
-argParser.add_argument('-o',
+argParser.add_argument('output_dir',
                        metavar='output_dir',
-                       required=True,
                        type=pathlib.Path,
                        help='Output directory for fetched images.')
 
@@ -57,11 +56,10 @@ argParser.add_argument('-l',
                        default='logs/logger.txt',
                        help="Log file to flush stdout.")
 
-
 args = argParser.parse_args()
 http_client = httplib2.Http()
 current_dir = os.getcwd()
-output_dir = args.o
+output_dir = args.output_dir
 filter_tags = args.f
 image_attributes = args.a
 url_length = args.u

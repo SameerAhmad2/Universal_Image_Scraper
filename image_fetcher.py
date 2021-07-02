@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 
 default_image_attributes = [
     'src', 'data-wood_src', 'data-large_image',
-    'data-srcset', "srcset", 'data-src', 'content'
+    'data-srcset', 'srcset', 'data-src', 'content'
 ]
 default_link_tags = ['img', 'source', 'meta']
 

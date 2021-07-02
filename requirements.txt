@@ -1,0 +1,10 @@
+beautifulsoup4==4.9.3
+certifi==2021.5.30
+chardet==4.0.0
+httplib2==0.19.1
+idna==2.10
+pyparsing==2.4.7
+requests==2.25.1
+soupsieve==2.2.1
+urllib3==1.26.6
+wget==3.2

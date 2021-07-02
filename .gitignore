@@ -1,0 +1,5 @@
+images/
+venv/
+
+.DS_Store
+.idea

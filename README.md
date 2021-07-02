@@ -45,7 +45,7 @@ Requires _Python 3.9_ and _BeautifulSoup 4_
 * Start virtual environment ``` source <ENVIRONMENT_NAME>/bin/activate ```  
 * Run ``` pip install -r requirements.txt```
 
-* Start Fetching Images with ```python image_fetcher.py [-args]```
+* Start Fetching Images with ```python image_fetcher.py <OUTPUT_DIR_NAME> [-optional_args]```
 
 ### ADDITIONAL INFORMATION ###
  - If a website is not specified the script will try to pass the default _template.html_ file for contents (in case manual html parsing is required).

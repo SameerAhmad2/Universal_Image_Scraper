@@ -151,8 +151,15 @@ def inline_progress(count, total, status=''):
     filled_len = int(round(bar_len * count / float(total)))
     percent = round(100.0 * count / float(total), 1)
     bar = progress_bar(filled_len, bar_len)
-    sys.stdout.write('[{}] {}{} ...{}\r'.format(bar, percent, '%', status))
+    sys.stdout.write('[{}] {}% ...{}\r'.format(bar, percent, status))
     sys.stdout.flush()
+
+
+def add_image_index(name, index):
+    image_length = len(name)
+    non_extension_name = name[:-5]
+    extension = name[image_length - 5:image_length]
+    return '{}__{}{}'.format(non_extension_name, index, extension)
 
 
 def setup_fetcher():
@@ -162,11 +169,14 @@ def setup_fetcher():
     frontier = []
     print('Fetching Images...')
 
+    if not os.path.exists('logs'):
+        os.makedirs('logs')
+
     if not os.path.exists('images'):
         os.makedirs('images')
 
-    if not os.path.exists('{}/{}'.format('images', output_dir)):
-        os.makedirs('{}/{}'.format('images', output_dir))
+    if not os.path.exists('images/{}'.format(output_dir)):
+        os.makedirs('images/{}'.format(output_dir))
 
     count = 0
     total = len(fetched_images)
@@ -185,6 +195,7 @@ def setup_fetcher():
                 image_name = image_names[-2]
             if not image_has_extension(image_name):
                 image_name = '{}.{}'.format(image_name, file_extension)
+            image_name = add_image_index(image_name, count)
             image_path = '{}/images/{}/{}'.format(current_dir, output_dir, image_name)
             subprocess.call(['wget', fetch_img, '-O', image_path],
                             stdout=open(stdout_file, 'a'),
@@ -192,7 +203,7 @@ def setup_fetcher():
         count += 1
     total_bar = progress_bar(100, 100)
     sys.stdout.flush()
-    sys.stdout.write('[{}] {}{} ...{}\n'.format(total_bar, 100.0, '%', 'IMAGES SAVED! (SUCCESS)'))
+    sys.stdout.write('[{}] {}% ...{}\n'.format(total_bar, 100.0, 'IMAGES SAVED! (SUCCESS)'))
     return
 
 

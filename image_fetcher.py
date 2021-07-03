@@ -3,8 +3,25 @@ import sys
 import subprocess
 import httplib2
 import pathlib
+
+from random import choice
 from bs4 import BeautifulSoup
+from urllib.parse import urlparse
 from argparse import ArgumentParser
+from string import ascii_uppercase as au, ascii_lowercase as al, digits
+
+
+def get_link_meta(url):
+    if not url:
+        return 'template'
+    return urlparse(url).hostname
+
+
+def generate_filename():
+    random_chars = [choice(au + al + digits) for _ in range(16)]
+    filename = ''.join(random_chars)
+    return '{}.txt'.format(filename)
+
 
 default_image_attributes = [
     'src', 'data-wood_src', 'data-large_image',
@@ -53,7 +70,7 @@ argParser.add_argument('-e',
 
 argParser.add_argument('-l',
                        metavar='log_file',
-                       default='logs/logger.txt',
+                       default=generate_filename(),
                        help="Log file to flush stdout.")
 
 args = argParser.parse_args()
@@ -65,7 +82,8 @@ image_attributes = args.a
 url_length = args.u
 file_extension = args.e
 link_tags = args.tags
-log_file = args.l
+hostname = get_link_meta(args.w)
+log_file = '{}__{}'.format(hostname, args.l)
 
 
 def fetch_images(html_text):
@@ -111,9 +129,10 @@ def get_html_contents():
 
 
 def image_has_extension(image_path):
+    image_extensions = ('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif', '.svg')
     return image_path\
         .lower()\
-        .endswith(('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif'))
+        .endswith(image_extensions)
 
 
 def progress_bar(fill, total):
@@ -139,7 +158,7 @@ def inline_progress(count, total, status=''):
 def setup_fetcher():
     html_information = get_html_contents()
     fetched_images = fetch_images(html_information)
-    stdout_file = '{}/{}'.format(current_dir, log_file)
+    stdout_file = '{}/logs/{}'.format(current_dir, log_file)
     frontier = []
     print('Fetching Images...')
 
@@ -166,9 +185,9 @@ def setup_fetcher():
                 image_name = image_names[-2]
             if not image_has_extension(image_name):
                 image_name = '{}.{}'.format(image_name, file_extension)
-            image_path = '{}/{}/{}/{}'.format(current_dir, 'images', output_dir, image_name)
+            image_path = '{}/images/{}/{}'.format(current_dir, output_dir, image_name)
             subprocess.call(['wget', fetch_img, '-O', image_path],
-                            stdout=open(stdout_file, 'w'),
+                            stdout=open(stdout_file, 'a'),
                             stderr=subprocess.STDOUT)
         count += 1
     total_bar = progress_bar(100, 100)

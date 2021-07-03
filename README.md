@@ -26,7 +26,7 @@ ___
       output_dir            Output directory for fetched images.
 
     optional arguments:
-      -h, --help            show this help message and exit
+      -h, --help            Show this help message and exits.
       -w [website]          Website url to fetch images from.
       -f filter_tags [filter_tags ...]
                             HTML filter tag to locate on.
@@ -34,7 +34,7 @@ ___
                             HTML tags to find image links through.
       -a image_attributes [image_attributes ...]
                             HTML image attribute to parse for links.
-      -u url_length         URL length of remote asset.
+      -u url_length         URL length of remote asset. ("short", "long")
       -e extension          Output image extension.
       -l log_file           Log file to flush stdout.
       
@@ -43,13 +43,15 @@ ___
     default_output_extension    = 'png'    
     default_url_length          = 'long'
     default_filter_tag          = 'html'
-    default_log_file            = 'logs/logger.txt'
     default_image_tags          = ['img', 'source', 'meta']
+    default_log_file            = '<HOSTNAME>__<RANDOM_ALPHANUMERIC>.txt'
     default_image_attributes    = [ 'src', 'data-wood_src', 'data-large_image', 'data-srcset', 
                                     'srcset', 'data-src', 'content']
 
   
 ### ADDITIONAL INFORMATION ###
  - If a website is not specified the script will try to pass the default _template.html_ file for contents (in case manual html parsing is required).
- - All images fetched will be stored in a parent _images_ directory along with the specified output directory.
+ - All images fetched will be stored in a parent _images/_ directory along with the specified output directory.
  - If the remote asset already has an image extension, the parsed extension is ignored.
+ - The URL length keyword specifies whether you want remote asset links to include query parameters or not. (long and short respectively)
+ - All log files generated are stored in a _logs/_ folder in the project directory.

@@ -50,8 +50,9 @@ ___
 
   
 ### ADDITIONAL INFORMATION ###
- - If a website is not specified the script will try to pass the default _template.html_ file for contents (in case manual html parsing is required).
  - All images fetched will be stored in a parent _images/_ directory along with the specified output directory.
  - If the remote asset already has an image extension, the parsed extension is ignored.
  - The URL length keyword specifies whether you want remote asset links to include query parameters or not. (long and short respectively)
  - All log files generated are stored in a _logs/_ folder in the project directory.
+ - If a -w keyword argument is not specified, the fetcher will parse all html files in am html directory in the root and use the name of the _.html_ file as the name of the output directory. (For local and specific html parsing).
+    While doing this, the passed output directory argument is ignored.

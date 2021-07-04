@@ -1,6 +1,8 @@
 images/
 venv/
 logs/
+html/
 
+template.html
 .DS_Store
 .idea

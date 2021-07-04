@@ -84,6 +84,16 @@ file_extension = args.e
 link_tags = args.tags
 hostname = get_link_meta(args.w)
 log_file = '{}__{}'.format(hostname, args.l)
+html_path = '{}/html'.format(current_dir)
+
+
+def is_html(filename):
+    return os.path.isfile(os.path.join(html_path, filename)) and filename.endswith('.html')
+
+
+def get_html_files():
+    directory_info = os.listdir(html_path)
+    return [os.path.join(html_path, f) for f in directory_info if is_html(f)]
 
 
 def fetch_images(html_text):
@@ -118,16 +128,6 @@ def fetch_images(html_text):
         print('Image Fetch Failed! Aborted!\n')
 
 
-def get_html_contents():
-    if not args.w:
-        html_file_path = 'template.html'
-        absolute_html_path = '{}/{}'.format(current_dir, html_file_path)
-        with open(absolute_html_path) as html_file:
-            return html_file.read()
-    status, response = http_client.request(args.w)
-    return response
-
-
 def image_has_extension(image_path):
     image_extensions = ('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif', '.svg')
     return image_path\
@@ -156,27 +156,31 @@ def inline_progress(count, total, status=''):
 
 
 def add_image_index(name, index):
-    image_length = len(name)
-    non_extension_name = name[:-5]
-    extension = name[image_length - 5:image_length]
-    return '{}__{}{}'.format(non_extension_name, index, extension)
+    image_sub_names = name.split('.')
+    image_full_name = '_'.join(image_sub_names[:-1])
+    return '{}__{}.{}'.format(image_full_name, index, image_sub_names[-1])
 
 
-def setup_fetcher():
-    html_information = get_html_contents()
-    fetched_images = fetch_images(html_information)
-    stdout_file = '{}/logs/{}'.format(current_dir, log_file)
-    frontier = []
-    print('Fetching Images...')
+def get_image_name(short_image_link, index):
+    image_names = short_image_link.split("/")
+    image_name = image_names[-1]
+    if not image_name:
+        image_name = image_names[-2]
+    if not image_has_extension(image_name):
+        image_name = '{}.{}'.format(image_name, file_extension)
+    return add_image_index(image_name, index)
 
-    if not os.path.exists('logs'):
-        os.makedirs('logs')
 
+def run_fetcher(contents, stdout_file, output_directory):
     if not os.path.exists('images'):
         os.makedirs('images')
 
-    if not os.path.exists('images/{}'.format(output_dir)):
-        os.makedirs('images/{}'.format(output_dir))
+    if not os.path.exists('images/{}'.format(output_directory)):
+        os.makedirs('images/{}'.format(output_directory))
+
+    print('Fetching Images...')
+    fetched_images = fetch_images(contents)
+    frontier = []
 
     count = 0
     total = len(fetched_images)
@@ -189,14 +193,8 @@ def setup_fetcher():
             frontier += [img]
             if url_length == 'short':
                 fetch_img = short_img
-            image_names = short_img.split("/")
-            image_name = image_names[-1]
-            if not image_name:
-                image_name = image_names[-2]
-            if not image_has_extension(image_name):
-                image_name = '{}.{}'.format(image_name, file_extension)
-            image_name = add_image_index(image_name, count)
-            image_path = '{}/images/{}/{}'.format(current_dir, output_dir, image_name)
+            output_filename = get_image_name(short_img, count)
+            image_path = '{}/images/{}/{}'.format(current_dir, output_directory, output_filename)
             subprocess.call(['wget', fetch_img, '-O', image_path],
                             stdout=open(stdout_file, 'a'),
                             stderr=subprocess.STDOUT)
@@ -205,6 +203,27 @@ def setup_fetcher():
     sys.stdout.flush()
     sys.stdout.write('[{}] {}% ...{}\n'.format(total_bar, 100.0, 'IMAGES SAVED! (SUCCESS)'))
     return
+
+
+def setup_fetcher():
+    if not os.path.exists('logs'):
+        os.makedirs('logs')
+
+    stdout_file = '{}/logs/{}'.format(current_dir, log_file)
+
+    if not args.w:
+        files = get_html_files()
+        for file_path in files:
+            print('Opening File with Path:', file_path)
+            with open(file_path) as html_file:
+                file_info = html_file.read()
+                file_basename = os.path.basename(file_path)
+                new_output_dir = file_basename.split('.')[0]
+                run_fetcher(file_info, stdout_file, new_output_dir)
+        return
+
+    _, response = http_client.request(args.w)
+    return run_fetcher(response, stdout_file, output_dir)
 
 
 setup_fetcher()

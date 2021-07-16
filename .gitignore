@@ -3,6 +3,6 @@ venv/
 logs/
 html/
 
-template.html
+image_fetcher_lechuza.py
 .DS_Store
 .idea

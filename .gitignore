@@ -2,7 +2,7 @@ images/
 venv/
 logs/
 html/
-
+__pycache__/
 image_fetcher_lechuza.py
 .DS_Store
 .idea
